@@ -1,0 +1,138 @@
+basePath: /
+definitions:
+  model.LoginRequest:
+    description: User login request information with email and password
+    properties:
+      email:
+        example: user@example.com
+        type: string
+      password:
+        example: e3sf24456789
+        type: string
+    type: object
+  model.RegisterRequest:
+    description: User registration request information with email and password
+    properties:
+      email:
+        example: user@example.com
+        type: string
+      password:
+        example: e3sf24456789
+        type: string
+    type: object
+  model.VerifyOTPRequest:
+    description: User verify otp request information with email and otp
+    properties:
+      email:
+        example: user@example.com
+        type: string
+      otp:
+        example: "123456"
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Swagger pour apis gobackend
+  title: GO_Backend
+  version: "1.1"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login user.
+      parameters:
+      - description: Email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: Password
+        in: body
+        name: password
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: Login user.
+      tags:
+      - Authentication
+  /auth/me:
+    get:
+      consumes:
+      - application/json
+      description: Get user information.
+      produces:
+      - application/json
+      responses: {}
+      summary: Get user information.
+      tags:
+      - Authentication
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Envoie un OTP à l’email fourni
+      parameters:
+      - description: User credentials
+        in: body
+        name: register_req
+        required: true
+        schema:
+          $ref: '#/definitions/model.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Enregistrer un nouvel utilisateur
+      tags:
+      - Authentication
+  /auth/verify/{email}:
+    post:
+      consumes:
+      - application/json
+      description: Verify the OTP sent to the user's email.
+      parameters:
+      - description: Email
+        in: path
+        name: email
+        required: true
+        type: string
+      - description: OTP
+        in: body
+        name: otp
+        required: true
+        schema:
+          $ref: '#/definitions/model.VerifyOTPRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      summary: Verify OTP sent to the user's email.
+      tags:
+      - Authentication
+swagger: "2.0"

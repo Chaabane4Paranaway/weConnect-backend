@@ -1,1 +1,1 @@
-# weConnect-backend
+// README.md - stub
