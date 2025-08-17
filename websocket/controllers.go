@@ -45,3 +45,10 @@ func (h *Hub) Send(senderId string, msg []byte) (err error) {
 	fmt.Printf("💬 Message from %s to %s: %s\n", wsMsg.SenderID, wsMsg.ReceiverID, wsMsg.Content)
 	return nil
 }
+
+func (h *Hub) IsOnline(userID string) bool {
+	h.mu.RLock()
+	defer h.mu.RUnlock()
+	_, ok := h.clients[userID]
+	return ok
+}

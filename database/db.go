@@ -29,7 +29,7 @@ var DB *gorm.DB
 
 func InitDB() {
 	defer func() {
-		if err := DB.AutoMigrate(&models.User{}, &models.Message{}); err != nil {
+		if err := DB.AutoMigrate(&models.User{}, &models.Message{}, &models.Friendship{}); err != nil {
 			log.Fatal("💥 Failed to migrate tables: ", err)
 		} else {
 			fmt.Println("✅ User tables migrated successfully")

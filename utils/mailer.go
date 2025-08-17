@@ -12,6 +12,6 @@ func GenerateOTP() string {
 	return fmt.Sprintf("%06d", rand.Intn(1000000))
 }
 
-func SendMockOTP(email string, otp string) {
-	fmt.Printf("📩 [MOCK] Sending OTP to %s: %s\n", email, otp)
+func SendMockOTP(pseudo string, otp string) {
+	fmt.Printf("📩 [MOCK] Sending OTP to %s: %s\n", pseudo, otp)
 }

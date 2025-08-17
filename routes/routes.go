@@ -32,5 +32,13 @@ func SetupRoutes(r *gin.Engine) {
 
 			r.GET("/ws", websocket.WebSocketHandler(hub))
 		}
+
+		friendship := protected.Group("/friendship")
+		{
+			friendship.POST("/add", controllers.AddFriend)
+			friendship.GET("/friends", controllers.GetFriendsHandler(hub))
+			// friendship.DELETE("/remove/:id", controllers.RemoveFriend)
+			// friendship.GET("/list", controllers.ListFriends)
+		}
 	}
 }

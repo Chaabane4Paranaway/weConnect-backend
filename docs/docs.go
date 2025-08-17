@@ -30,8 +30,8 @@ const docTemplate = `{
                 "summary": "Login user.",
                 "parameters": [
                     {
-                        "description": "Email",
-                        "name": "email",
+                        "description": "pseudo",
+                        "name": "pseudo",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -69,7 +69,7 @@ const docTemplate = `{
         },
         "/auth/register": {
             "post": {
-                "description": "Envoie un OTP à l’email fourni",
+                "description": "Envoie un OTP à l’pseudo fourni",
                 "consumes": [
                     "application/json"
                 ],
@@ -110,9 +110,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/verify/{email}": {
+        "/auth/verify/{pseudo}": {
             "post": {
-                "description": "Verify the OTP sent to the user's email.",
+                "description": "Verify the OTP sent to the user's pseudo.",
                 "consumes": [
                     "application/json"
                 ],
@@ -122,12 +122,12 @@ const docTemplate = `{
                 "tags": [
                     "Authentication"
                 ],
-                "summary": "Verify OTP sent to the user's email.",
+                "summary": "Verify OTP sent to the user's pseudo.",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Email",
-                        "name": "email",
+                        "description": "pseudo",
+                        "name": "pseudo",
                         "in": "path",
                         "required": true
                     },
@@ -166,10 +166,10 @@ const docTemplate = `{
     },
     "definitions": {
         "model.LoginRequest": {
-            "description": "User login request information with email and password",
+            "description": "User login request information with pseudo and password",
             "type": "object",
             "properties": {
-                "email": {
+                "pseudo": {
                     "type": "string",
                     "example": "user@example.com"
                 },
@@ -180,10 +180,10 @@ const docTemplate = `{
             }
         },
         "model.RegisterRequest": {
-            "description": "User registration request information with email and password",
+            "description": "User registration request information with pseudo and password",
             "type": "object",
             "properties": {
-                "email": {
+                "pseudo": {
                     "type": "string",
                     "example": "user@example.com"
                 },
@@ -194,10 +194,10 @@ const docTemplate = `{
             }
         },
         "model.VerifyOTPRequest": {
-            "description": "User verify otp request information with email and otp",
+            "description": "User verify otp request information with pseudo and otp",
             "type": "object",
             "properties": {
-                "email": {
+                "pseudo": {
                     "type": "string",
                     "example": "user@example.com"
                 },

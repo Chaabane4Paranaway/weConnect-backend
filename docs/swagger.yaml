@@ -1,9 +1,9 @@
 basePath: /
 definitions:
   model.LoginRequest:
-    description: User login request information with email and password
+    description: User login request information with pseudo and password
     properties:
-      email:
+      pseudo:
         example: user@example.com
         type: string
       password:
@@ -11,9 +11,9 @@ definitions:
         type: string
     type: object
   model.RegisterRequest:
-    description: User registration request information with email and password
+    description: User registration request information with pseudo and password
     properties:
-      email:
+      pseudo:
         example: user@example.com
         type: string
       password:
@@ -21,9 +21,9 @@ definitions:
         type: string
     type: object
   model.VerifyOTPRequest:
-    description: User verify otp request information with email and otp
+    description: User verify otp request information with pseudo and otp
     properties:
-      email:
+      pseudo:
         example: user@example.com
         type: string
       otp:
@@ -40,52 +40,52 @@ paths:
   /auth/login:
     post:
       consumes:
-      - application/json
+        - application/json
       description: Login user.
       parameters:
-      - description: Email
-        in: body
-        name: email
-        required: true
-        schema:
-          type: string
-      - description: Password
-        in: body
-        name: password
-        required: true
-        schema:
-          $ref: '#/definitions/model.LoginRequest'
+        - description: pseudo
+          in: body
+          name: pseudo
+          required: true
+          schema:
+            type: string
+        - description: Password
+          in: body
+          name: password
+          required: true
+          schema:
+            $ref: "#/definitions/model.LoginRequest"
       produces:
-      - application/json
+        - application/json
       responses: {}
       summary: Login user.
       tags:
-      - Authentication
+        - Authentication
   /auth/me:
     get:
       consumes:
-      - application/json
+        - application/json
       description: Get user information.
       produces:
-      - application/json
+        - application/json
       responses: {}
       summary: Get user information.
       tags:
-      - Authentication
+        - Authentication
   /auth/register:
     post:
       consumes:
-      - application/json
-      description: Envoie un OTP à l’email fourni
+        - application/json
+      description: Envoie un OTP à l’pseudo fourni
       parameters:
-      - description: User credentials
-        in: body
-        name: register_req
-        required: true
-        schema:
-          $ref: '#/definitions/model.RegisterRequest'
+        - description: User credentials
+          in: body
+          name: register_req
+          required: true
+          schema:
+            $ref: "#/definitions/model.RegisterRequest"
       produces:
-      - application/json
+        - application/json
       responses:
         "201":
           description: Created
@@ -99,26 +99,26 @@ paths:
             type: string
       summary: Enregistrer un nouvel utilisateur
       tags:
-      - Authentication
-  /auth/verify/{email}:
+        - Authentication
+  /auth/verify/{pseudo}:
     post:
       consumes:
-      - application/json
-      description: Verify the OTP sent to the user's email.
+        - application/json
+      description: Verify the OTP sent to the user's pseudo.
       parameters:
-      - description: Email
-        in: path
-        name: email
-        required: true
-        type: string
-      - description: OTP
-        in: body
-        name: otp
-        required: true
-        schema:
-          $ref: '#/definitions/model.VerifyOTPRequest'
+        - description: pseudo
+          in: path
+          name: pseudo
+          required: true
+          type: string
+        - description: OTP
+          in: body
+          name: otp
+          required: true
+          schema:
+            $ref: "#/definitions/model.VerifyOTPRequest"
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -132,7 +132,7 @@ paths:
           description: Unauthorized
           schema:
             type: string
-      summary: Verify OTP sent to the user's email.
+      summary: Verify OTP sent to the user's pseudo.
       tags:
-      - Authentication
+        - Authentication
 swagger: "2.0"

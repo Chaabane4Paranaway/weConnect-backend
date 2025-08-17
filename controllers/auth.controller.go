@@ -46,12 +46,12 @@ func Register(c *gin.Context) {
 	}
 
 	var existing models.User
-	if err := database.DB.Where("email = ?", req.Email).First(&existing).Error; err == nil {
+	if err := database.DB.Where("pseudo = ?", req.Pseudo).First(&existing).Error; err == nil {
 		if existing.Otp == "" {
 			c.JSON(http.StatusBadRequest, dto.GlobalError{
 				CodeStatus:       http.StatusBadRequest,
-				TechnicalMessage: "",
-				Message:          "Utilisateur déjà existant",
+				TechnicalMessage: "Pseudo already exists",
+				Message:          "Pseudo déjà existant",
 			})
 			log.Println(err)
 		}
@@ -73,7 +73,7 @@ func Register(c *gin.Context) {
 				TechnicalMessage: "",
 				Message:          "OTP renvoyé avec succès!",
 			})
-			log.Printf("OTP envoyé à %s", req.Email)
+			log.Printf("OTP envoyé à %s", req.Pseudo)
 			return
 		}
 	}
@@ -94,7 +94,7 @@ func Register(c *gin.Context) {
 	otp := utils.GenerateOTP()
 
 	user := &models.User{
-		Email:        req.Email,
+		Pseudo:       req.Pseudo,
 		Password:     hashed,
 		Otp:          otp,
 		Verified:     false,
@@ -112,30 +112,30 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	utils.SendMockOTP(req.Email, otp)
+	utils.SendMockOTP(req.Pseudo, otp)
 
 	c.JSON(http.StatusCreated, dto.GlobalSuccess{
 		CodeStatus: http.StatusCreated,
-		Message:    "Utilisateur créé avec succès. OTP envoyé à l'email",
+		Message:    "Utilisateur créé avec succès. OTP envoyé à l'pseudo",
 		Data: dto.RegisterResponse{
 			Verified: user.Verified,
-			Email:    user.Email,
+			Pseudo:   user.Pseudo,
 		},
 	})
 }
 
 // VerifyOTP godoc
-// @Summary Verify OTP sent to the user's email.
-// @Description Verify the OTP sent to the user's email.
+// @Summary Verify OTP sent to the user's pseudo.
+// @Description Verify the OTP sent to the user's pseudo.
 // @Tags Authentication
 // @Accept json
 // @Produce json
-// @Param email path string true "Email"
+// @Param pseudo path string true "pseudo"
 // @Param otp body model.VerifyOTPRequest true "OTP"
 // @Success 200 {object} string
 // @Failure 400 {object} string
 // @Failure 401 {object} string
-// @Router /auth/verify/{email} [post]
+// @Router /auth/verify/{pseudo} [post]
 func VerifyOTP(c *gin.Context) {
 	var req dto.VerifyOTPRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -143,7 +143,7 @@ func VerifyOTP(c *gin.Context) {
 		return
 	}
 	var user models.User
-	if err := database.DB.First(&user, "email = ?", req.Email).Error; err != nil {
+	if err := database.DB.First(&user, "pseudo = ?", req.Pseudo).Error; err != nil {
 		c.JSON(http.StatusUnauthorized, dto.GlobalError{
 			CodeStatus:       http.StatusUnauthorized,
 			TechnicalMessage: err.Error(),
@@ -201,7 +201,7 @@ func VerifyOTP(c *gin.Context) {
 		Message:    "Utilisateur vérifié avec succès",
 		Data: gin.H{
 			"verified": user.Verified,
-			"email":    user.Email,
+			"pseudo":   user.Pseudo,
 			"token":    token,
 		},
 	})
@@ -228,7 +228,7 @@ func Login(c *gin.Context) {
 	}
 
 	var user models.User
-	if err := database.DB.First(&user, "email = ?", req.Email).Error; err != nil {
+	if err := database.DB.First(&user, "pseudo = ?", req.Pseudo).Error; err != nil {
 		c.JSON(http.StatusUnauthorized, dto.GlobalError{
 			CodeStatus:       http.StatusUnauthorized,
 			TechnicalMessage: err.Error(),
@@ -249,8 +249,8 @@ func Login(c *gin.Context) {
 	if !user.Verified {
 		c.JSON(http.StatusUnauthorized, dto.GlobalError{
 			CodeStatus:       http.StatusUnauthorized,
-			TechnicalMessage: "Email not verified",
-			Message:          "Email not verified",
+			TechnicalMessage: "pseudo not verified",
+			Message:          "pseudo not verified",
 		})
 		return
 	}

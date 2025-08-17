@@ -1,205 +1,181 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "description": "Swagger pour apis gobackend",
-        "title": "GO_Backend",
-        "contact": {},
-        "version": "1.1"
+  "swagger": "2.0",
+  "info": {
+    "description": "Swagger pour apis gobackend",
+    "title": "GO_Backend",
+    "contact": {},
+    "version": "1.1"
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "description": "Login user.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Authentication"],
+        "summary": "Login user.",
+        "parameters": [
+          {
+            "description": "pseudo",
+            "name": "pseudo",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Password",
+            "name": "password",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/model.LoginRequest"
+            }
+          }
+        ],
+        "responses": {}
+      }
     },
-    "host": "localhost:8080",
-    "basePath": "/",
-    "paths": {
-        "/auth/login": {
-            "post": {
-                "description": "Login user.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Authentication"
-                ],
-                "summary": "Login user.",
-                "parameters": [
-                    {
-                        "description": "Email",
-                        "name": "email",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Password",
-                        "name": "password",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.LoginRequest"
-                        }
-                    }
-                ],
-                "responses": {}
-            }
-        },
-        "/auth/me": {
-            "get": {
-                "description": "Get user information.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Authentication"
-                ],
-                "summary": "Get user information.",
-                "responses": {}
-            }
-        },
-        "/auth/register": {
-            "post": {
-                "description": "Envoie un OTP à l’email fourni",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Authentication"
-                ],
-                "summary": "Enregistrer un nouvel utilisateur",
-                "parameters": [
-                    {
-                        "description": "User credentials",
-                        "name": "register_req",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.RegisterRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/verify/{email}": {
-            "post": {
-                "description": "Verify the OTP sent to the user's email.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Authentication"
-                ],
-                "summary": "Verify OTP sent to the user's email.",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Email",
-                        "name": "email",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "OTP",
-                        "name": "otp",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.VerifyOTPRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        }
+    "/auth/me": {
+      "get": {
+        "description": "Get user information.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Authentication"],
+        "summary": "Get user information.",
+        "responses": {}
+      }
     },
-    "definitions": {
-        "model.LoginRequest": {
-            "description": "User login request information with email and password",
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string",
-                    "example": "user@example.com"
-                },
-                "password": {
-                    "type": "string",
-                    "example": "e3sf24456789"
-                }
+    "/auth/register": {
+      "post": {
+        "description": "Envoie un OTP à l’pseudo fourni",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Authentication"],
+        "summary": "Enregistrer un nouvel utilisateur",
+        "parameters": [
+          {
+            "description": "User credentials",
+            "name": "register_req",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/model.RegisterRequest"
             }
-        },
-        "model.RegisterRequest": {
-            "description": "User registration request information with email and password",
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string",
-                    "example": "user@example.com"
-                },
-                "password": {
-                    "type": "string",
-                    "example": "e3sf24456789"
-                }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
             }
-        },
-        "model.VerifyOTPRequest": {
-            "description": "User verify otp request information with email and otp",
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string",
-                    "example": "user@example.com"
-                },
-                "otp": {
-                    "type": "string",
-                    "example": "123456"
-                }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
             }
+          }
         }
+      }
+    },
+    "/auth/verify/{pseudo}": {
+      "post": {
+        "description": "Verify the OTP sent to the user's pseudo.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Authentication"],
+        "summary": "Verify OTP sent to the user's pseudo.",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "pseudo",
+            "name": "pseudo",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "OTP",
+            "name": "otp",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/model.VerifyOTPRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
     }
+  },
+  "definitions": {
+    "model.LoginRequest": {
+      "description": "User login request information with pseudo and password",
+      "type": "object",
+      "properties": {
+        "pseudo": {
+          "type": "string",
+          "example": "user@example.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "e3sf24456789"
+        }
+      }
+    },
+    "model.RegisterRequest": {
+      "description": "User registration request information with pseudo and password",
+      "type": "object",
+      "properties": {
+        "pseudo": {
+          "type": "string",
+          "example": "user@example.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "e3sf24456789"
+        }
+      }
+    },
+    "model.VerifyOTPRequest": {
+      "description": "User verify otp request information with pseudo and otp",
+      "type": "object",
+      "properties": {
+        "pseudo": {
+          "type": "string",
+          "example": "user@example.com"
+        },
+        "otp": {
+          "type": "string",
+          "example": "123456"
+        }
+      }
+    }
+  }
 }
